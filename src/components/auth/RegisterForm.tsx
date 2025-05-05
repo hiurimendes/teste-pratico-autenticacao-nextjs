@@ -23,7 +23,7 @@ export function RegisterForm<FormSchema extends FieldValues>({
 }: RegisterFormProps<FormSchema>) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:mt-5">
         <FormField
           control={form.control}
           name={"email" as Path<FormSchema>}
@@ -34,7 +34,7 @@ export function RegisterForm<FormSchema extends FieldValues>({
                 <Input
                   placeholder="e-mail@website.com"
                   className={size === "desktop"
-                    ? "h-14 rounded-lg border border-[#D7E0EB] bg-[#F0F6FD] text-[#99A7B7] placeholder-[#99A7B7] focus:border-[#00218F] focus:ring-0 text-base"
+                    ? "py-[30px] mt-1 rounded-sm border border-[#D7E0EB] placeholder-[#99A7B7] focus:border-[#00218F] focus:ring-0 text-xl"
                     : "py-[30px] rounded-sm border border-[#D7E0EB] text-gray-600 placeholder-gray-100 focus:border-[#00218F] focus:ring-0 text-sm"
                   }
                   {...field}
@@ -55,7 +55,7 @@ export function RegisterForm<FormSchema extends FieldValues>({
                   type="password"
                   placeholder="min. 8 caracteres"
                   className={size === "desktop"
-                    ? "h-14 rounded-lg border border-[#D7E0EB] bg-[#F0F6FD] text-[#99A7B7] placeholder-[#99A7B7] focus:border-[#00218F] focus:ring-0 text-base"
+                    ? "py-[30px] mt-1 rounded-sm border border-[#D7E0EB] placeholder-[#99A7B7] focus:border-[#00218F] focus:ring-0 text-xl"
                     : "py-[30px] rounded-sm border border-[#D7E0EB] text-gray-600 placeholder-gray-100 focus:border-[#00218F] focus:ring-0 text-sm"
                   }
                   {...field}
@@ -76,7 +76,7 @@ export function RegisterForm<FormSchema extends FieldValues>({
                   type="password"
                   placeholder="Digite a mesma senha escolhida"
                   className={size === "desktop"
-                    ? "h-14 rounded-lg border border-[#D7E0EB] bg-[#F0F6FD] text-[#99A7B7] placeholder-[#99A7B7] focus:border-[#00218F] focus:ring-0 text-base"
+                    ? "py-[30px] mt-1 rounded-sm border border-[#D7E0EB] placeholder-[#99A7B7] focus:border-[#00218F] focus:ring-0 text-xl"
                     : "py-[30px] rounded-sm border border-[#D7E0EB] text-gray-600 placeholder-gray-100 focus:border-[#00218F] focus:ring-0 text-sm"
                   }
                   {...field}
@@ -99,7 +99,7 @@ export function RegisterForm<FormSchema extends FieldValues>({
                   style={{ backgroundColor: field.value ? '#00218F' : undefined }}
                 />
               </FormControl>
-              <FormLabel className={size === "desktop" ? "text-[#1B1D28] text-base font-medium mt-0" : "text-[#1B1D28] text-xs font-medium mt-0"}>
+              <FormLabel className={size === "desktop" ? "text-[#1B1D28] text-sm font-medium mt-0" : "text-[#1B1D28] text-xs font-medium mt-0"}>
                 Concordo com os
                 <a href="#" className={size === "desktop" ? "text-[#00218F] hover:underline font-medium" : "text-[#00218F] hover:underline text-xs font-semibold"}>Termos e Condições</a>
               </FormLabel>
@@ -127,8 +127,8 @@ export function RegisterForm<FormSchema extends FieldValues>({
         </div>
       </form>
       {onSwitchToLogin && (
-        <div className={size === "desktop" ? "mt-6" : "mt-6 text-center"}>
-          <p className={size === "desktop" ? "text-base text-[#99A7B7]" : "text-xs text-[#99A7B7]"}>
+        <div className={size === "desktop" ? "mt-6 text-center" : "mt-6 text-center"}>
+          <p className={size === "desktop" ? "text-sm text-[#99A7B7]" : "text-xs text-[#99A7B7]"}>
             Já tem conta?{' '}
             <a href="#" onClick={onSwitchToLogin} className="text-[#00218F] font-medium hover:underline cursor-pointer inline-block">
               Entre aqui

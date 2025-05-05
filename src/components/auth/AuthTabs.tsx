@@ -32,10 +32,10 @@ export function AuthTabs<
   size = "desktop",
 }: AuthTabsProps<LoginSchema, RegisterSchema>) {
   return (
-    <Tabs value={tab} onValueChange={setTab} className="w-full items-center h-full">
+    <Tabs value={tab} onValueChange={setTab} className="w-full items-center md:items-start h-full">
       <TabsList className={
         size === "desktop"
-          ? "flex bg-[#F5F7FD] rounded-[18px] w-full max-w-[300px] h-9 mb-8 p-1 border-0 gap-x-3"
+          ? "flex bg-[#F5F7FD] rounded-[18px] w-3/6 h-9 mb-[46px] p-1 border-0 gap-x-3"
           : "flex bg-[#F5F7FD] rounded-[18px] w-3/5 mb-6 p-1 h-9"
       }>
         <TabsTrigger
@@ -53,17 +53,17 @@ export function AuthTabs<
       </TabsList>
       {tab === 'login' ? (
       <div className="w-full mb-4 flex flex-col gap-2">
-        <h1 className="font-bold text-2xl">Entrar</h1>
-        <p className="text-xs text-gray-500">Non sit purus tempus malesuada poten</p>
+        <h1 className="font-bold text-2xl md:text-3xl">Entrar</h1>
+        <p className="text-xs md:text-base md:mt-2 text-gray-500">Non sit purus tempus malesuada poten</p>
       </div>
       ) : (
       <div className="w-full mb-4 flex flex-col gap-2">
-        <h1 className="font-bold text-2xl">Cadastrar</h1>
-        <p className="text-xs text-gray-500">Non sit purus tempus malesuada poten</p>
+        <h1 className="font-bold text-2xl md:text-3xl">Cadastrar</h1>
+        <p className="text-xs md:text-base md:mt-2 text-gray-500">Non sit purus tempus malesuada poten</p>
       </div>
       )}
       <div className={size === "desktop" ? "w-full" : "w-full"}>
-        <TabsContent value="login" className="mt-0 h-full">
+        <TabsContent value="login" className="mt-0 md:mt-2.5 h-full">
           <LoginForm
             form={loginForm}
             onSubmit={onLogin}

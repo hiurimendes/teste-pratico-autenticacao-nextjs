@@ -26,7 +26,7 @@ export function LoginForm<FormSchema extends FieldValues>({
 }: LoginFormProps<FormSchema>) {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-4">
         <FormField
           control={form.control}
           name={"email" as Path<FormSchema>}
@@ -37,7 +37,7 @@ export function LoginForm<FormSchema extends FieldValues>({
                 <Input
                   placeholder="e-mail@website.com"
                   className={size === "desktop"
-                    ? "h-14 rounded-lg border border-[#D7E0EB] bg-[#F0F6FD] text-[#99A7B7] placeholder-[#99A7B7] focus:border-[#00218F] focus:ring-0 text-base"
+                    ? "py-[30px] mt-1 rounded-sm border border-[#D7E0EB] placeholder-[#99A7B7] focus:border-[#00218F] focus:ring-0 text-xl"
                     : "py-[30px] rounded-sm border border-[#D7E0EB] text-gray-600 placeholder-gray-100 focus:border-[#00218F] focus:ring-0 text-sm"
                   }
                   {...field}
@@ -58,7 +58,7 @@ export function LoginForm<FormSchema extends FieldValues>({
                   type="password"
                   placeholder="min. 8 caracteres"
                   className={size === "desktop"
-                    ? "h-14 rounded-lg border border-[#D7E0EB] bg-[#F0F6FD] text-[#99A7B7] placeholder-[#99A7B7] focus:border-[#00218F] focus:ring-0 text-base"
+                    ? "py-[30px] mt-1 rounded-sm border border-[#D7E0EB] placeholder-[#99A7B7] focus:border-[#00218F] focus:ring-0 text-xl"
                     : "py-[30px] rounded-sm border border-[#D7E0EB] text-gray-600 placeholder-gray-100 focus:border-[#00218F] focus:ring-0 text-sm"
                   }
                   {...field}
@@ -78,7 +78,7 @@ export function LoginForm<FormSchema extends FieldValues>({
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
-                    className={size === "desktop" ? "border-[#00218F] text-[#00218F] w-5 h-5 rounded-sm focus:ring-0 focus:ring-offset-0" : "border-[#00218F] text-[#00218F] w-5 h-5 focus:ring-0 focus:ring-offset-0"}
+                    className={size === "desktop" ? "border-[#00218F] text-[#00218F] w-5 h-5 focus:ring-0 focus:ring-offset-0" : "border-[#00218F] text-[#00218F] w-5 h-5 focus:ring-0 focus:ring-offset-0"}
                     style={{ backgroundColor: field.value ? '#00218F' : undefined }}
                   />
                 </FormControl>
@@ -115,8 +115,8 @@ export function LoginForm<FormSchema extends FieldValues>({
         </div>
       </form>
       {onSwitchToRegister && (
-        <div className={size === "desktop" ? "mt-6" : "mt-6 text-center"}>
-          <p className={size === "desktop" ? "text-base text-[#99A7B7]" : "text-xs text-[#99A7B7]"}>
+        <div className={size === "desktop" ? "mt-6 text-center" : "mt-6 text-center"}>
+          <p className={size === "desktop" ? "text-sm font-semibold" : "text-xs text-[#99A7B7]"}>
             Ainda não tem conta?{' '}
             <a href="#" onClick={onSwitchToRegister} className="text-[#00218F] font-medium hover:underline cursor-pointer inline-block">
               Assine agora

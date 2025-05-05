@@ -86,7 +86,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center">
+    <div className="min-h-screen w-full flex items-center justify-center md:items-start md:justify-start">
       {/* MOBILE VERSION */}
       <div className="md:hidden flex items-start justify-center w-full min-h-screen bg-cover bg-center" style={{ background: 'url(/background.svg), url(/background.png)', backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <AuthCard>
@@ -111,8 +111,8 @@ export default function LoginPage() {
       <AuthDesktopLayout
         left={
           <>
-            <div className="w-full mb-6">
-              <div className="mb-10 mt-8">
+            <div className="flex flex-col w-full max-w-[74%] mb-6 md:mb-0 ml-1 items-start justify-start">
+              <div className="mb-12 mt-0">
                 <AuthLogo size="desktop" />
               </div>
               <AuthTabs
@@ -126,11 +126,11 @@ export default function LoginPage() {
                 size="desktop"
               />
             </div>
-            <AuthFooter className="absolute left-[clamp(3vw,6vw,120px)] bottom-4" />
+            <AuthFooter className="sm:absolute left-[clamp(3vw,6vw,120px)] bottom-4" />
           </>
         }
         right={
-          <h1 className="text-[50px] font-bold leading-tight">
+          <h1 className="text-[50px] font-bold leading-tight max-w-xl ml-32">
             A Revolução do Marketing por <span className="text-[#4FD8CD]">Influência</span>
           </h1>
         }
