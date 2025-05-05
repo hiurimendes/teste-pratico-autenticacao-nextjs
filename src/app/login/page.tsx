@@ -3,9 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as z from "zod";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { AuthLogo } from "@/components/auth/AuthLogo";
 import { AuthFooter } from "@/components/auth/AuthFooter";
 import { AuthTabs } from "@/components/auth/AuthTabs";
@@ -35,10 +35,11 @@ type RegisterSchema = z.infer<typeof registerSchema>;
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { status } = useSession();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const [tab, setTab] = React.useState("login");
 
-  // Login form
+  // Initialize forms before any conditional returns
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,6 +48,22 @@ export default function LoginPage() {
       remember: false,
     },
   });
+
+  const registerForm = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      terms: false,
+    },
+  });
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/dashboard");
+    }
+  }, [status, router]);
 
   const onSubmit: SubmitHandler<FormSchema> = async (values) => {
     try {
@@ -69,21 +86,58 @@ export default function LoginPage() {
     }
   };
 
-  // Register form
-  const registerForm = useForm<RegisterSchema>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-      terms: false,
-    },
-  });
-
   const onRegister: SubmitHandler<RegisterSchema> = async (values) => {
-    // Registration logic here
-    alert("Cadastro enviado! (implemente a lógica de backend)");
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        registerForm.setError("root", {
+          message: data.message || "Erro ao criar conta",
+        });
+        return;
+      }
+
+      // Sign in the user after successful registration
+      const result = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        registerForm.setError("root", {
+          message: "Erro ao fazer login automático",
+        });
+        return;
+      }
+
+      router.push(callbackUrl);
+    } catch (error) {
+      registerForm.setError("root", {
+        message: "Ocorreu um erro. Por favor, tente novamente.",
+      });
+    }
   };
+
+  // Show loading state after all hooks are initialized
+  if (status === "loading" || status === "authenticated") {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center">
+        <p className="text-lg text-gray-600">Carregando...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center md:items-start md:justify-start">

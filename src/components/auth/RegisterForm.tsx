@@ -2,9 +2,10 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Spinner } from "@/components/ui/spinner";
 import { GoogleButton } from "./GoogleButton";
 import { UseFormReturn, SubmitHandler, FieldValues, Path } from "react-hook-form";
-import React from "react";
+import React, { useState } from "react";
 
 interface RegisterFormProps<FormSchema extends FieldValues> {
   form: UseFormReturn<FormSchema>;
@@ -21,9 +22,20 @@ export function RegisterForm<FormSchema extends FieldValues>({
   onGoogle,
   onSwitchToLogin,
 }: RegisterFormProps<FormSchema>) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (data: FormSchema) => {
+    setIsSubmitting(true);
+    try {
+      await onSubmit(data);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:mt-5">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4 md:space-y-4">
         <FormField
           control={form.control}
           name={"email" as Path<FormSchema>}
@@ -114,24 +126,26 @@ export function RegisterForm<FormSchema extends FieldValues>({
         <div>
           <Button
             type="submit"
-            className={`w-full p-[27px] bg-[#00218F] hover:bg-[#001A72] text-white rounded-lg font-medium ${size === "desktop" ? "text-base" : "text-base"} shadow-none mt-4`}
+            disabled={isSubmitting}
+            className={`w-full p-[27px] bg-[#00218F] hover:bg-[#001A72] text-white rounded-lg font-medium ${size === "desktop" ? "text-base" : "text-base"} shadow-none mt-4 flex items-center justify-center gap-2`}
           >
-            Cadastrar
+            {isSubmitting && <Spinner />}
+            Registrar
           </Button>
           <GoogleButton
             onClick={onGoogle || (() => {})}
             size={size}
           >
-            Entrar com o Google
+            Registrar com o Google
           </GoogleButton>
         </div>
       </form>
       {onSwitchToLogin && (
         <div className={size === "desktop" ? "mt-6 text-center" : "mt-6 text-center"}>
-          <p className={size === "desktop" ? "text-sm text-[#99A7B7]" : "text-xs text-[#99A7B7]"}>
-            Já tem conta?{' '}
+          <p className={size === "desktop" ? "text-sm font-semibold" : "text-xs text-[#99A7B7]"}>
+            Já tem uma conta?{' '}
             <a href="#" onClick={onSwitchToLogin} className="text-[#00218F] font-medium hover:underline cursor-pointer inline-block">
-              Entre aqui
+              Entre agora
             </a>
           </p>
         </div>

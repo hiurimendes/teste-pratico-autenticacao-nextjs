@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Desafio Técnico - Conversão de Figma + Autenticação
 
-## Getting Started
+Este projeto consiste na conversão de um design Figma para uma interface frontend responsiva, com sistema de autenticação integrado.
 
-First, run the development server:
+## 🚀 Tecnologias Utilizadas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Shadcn UI](https://ui.shadcn.com/)
+- [NextAuth.js](https://next-auth.js.org/)
+- [Prisma ORM](https://www.prisma.io/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [React Hook Form](https://react-hook-form.com/)
+- [Zod](https://zod.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🧩 Funcionalidades
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Conversão do layout Figma para UI responsiva com Tailwind + Shadcn UI
+- Sistema de cadastro e login de usuários
+- Validação de formulário com Zod + React Hook Form
+- Proteção de rotas com middleware de autenticação
+- Redirecionamento automático para `/dashboard` após login
+- Banco de dados PostgreSQL com gerenciamento via Prisma ORM
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Como Rodar Localmente
 
-## Learn More
+1. Clone o repositório  
+2. Instale as dependências com `npm install` ou `yarn`  
+3. Configure as variáveis de ambiente (`.env`) com:
+    ```env
+    DATABASE_URL=postgresql://...
+    NEXTAUTH_SECRET=...
+    NEXTAUTH_URL=http://localhost:3000
+    GOOGLE_CLIENT_ID=...
+    GOOGLE_CLIENT_SECRET=...
+    ```
+4. Rode as migrations do Prisma:  
+    ```bash
+    npx prisma generate
+    npx prisma migrate dev
+    ```
+5. Inicie o servidor:  
+    ```bash
+    npm run dev
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+## 🔐 Acesso Protegido
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+A rota `/dashboard` só pode ser acessada por usuários autenticados.  
+A autenticação é verificada via middleware (`middleware.ts`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧠 Abordagem AI First
 
-## Deploy on Vercel
+Grande parte da lógica e estrutura foi criada com apoio de IA (ChatGPT), seguindo a abordagem AI First solicitada.  
+Trechos relevantes da conversa com IA foram salvos e podem ser enviados separadamente, se necessário.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🌐 Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Aplicação hospedada na Vercel:  
+🔗 [Link para o Deploy](https://teste-nextjs.hiurimendes.com.br)
+
+---
+
+Desenvolvido como parte de um desafio técnico.

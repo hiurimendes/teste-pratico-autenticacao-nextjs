@@ -3,6 +3,7 @@ import { LoginForm } from "./LoginForm";
 import { RegisterForm } from "./RegisterForm";
 import React from "react";
 import { FieldValues, UseFormReturn, SubmitHandler } from "react-hook-form";
+import { signIn } from "next-auth/react";
 
 interface AuthTabsProps<
   LoginSchema extends FieldValues,
@@ -69,7 +70,7 @@ export function AuthTabs<
             onSubmit={onLogin}
             callbackUrl={callbackUrl}
             size={size}
-            onGoogle={() => loginForm.handleSubmit(onLogin)()}
+            onGoogle={() => signIn("google", { callbackUrl })}
             onSwitchToRegister={() => setTab("register")}
           />
         </TabsContent>
@@ -78,7 +79,7 @@ export function AuthTabs<
             form={registerForm}
             onSubmit={onRegister}
             size={size}
-            onGoogle={() => registerForm.handleSubmit(onRegister)()}
+            onGoogle={() => signIn("google", { callbackUrl })}
             onSwitchToLogin={() => setTab("login")}
           />
         </TabsContent>
