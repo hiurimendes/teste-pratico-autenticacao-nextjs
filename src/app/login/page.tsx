@@ -79,7 +79,7 @@ export default function LoginPage() {
         return;
       }
       router.push(callbackUrl);
-    } catch (error) {
+    } catch {
       form.setError("root", {
         message: "Ocorreu um erro. Por favor, tente novamente.",
       });
@@ -123,7 +123,7 @@ export default function LoginPage() {
       }
 
       router.push(callbackUrl);
-    } catch (error) {
+    } catch {
       registerForm.setError("root", {
         message: "Ocorreu um erro. Por favor, tente novamente.",
       });

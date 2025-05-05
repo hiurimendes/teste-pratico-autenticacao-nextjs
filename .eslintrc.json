@@ -1,0 +1,14 @@
+{
+  "extends": "next/core-web-vitals",
+  "ignorePatterns": [
+    "**/generated/**/*",
+    "**/prisma/generated/**/*",
+    "**/prisma/client/**/*",
+    "node_modules/**/*"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "error",
+    "no-var": "error"
+  }
+} 

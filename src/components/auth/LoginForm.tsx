@@ -20,7 +20,6 @@ interface LoginFormProps<FormSchema extends FieldValues> {
 export function LoginForm<FormSchema extends FieldValues>({
   form,
   onSubmit,
-  callbackUrl,
   size = "desktop",
   onGoogle,
   onSwitchToRegister,

@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { prisma } from "./prisma";
+import prisma from "./prisma";
 import { compare } from "bcryptjs";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -24,47 +24,40 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     CredentialsProvider({
-      name: "credentials",
+      name: "Sign in",
       credentials: {
-        email: { label: "Email", type: "email" },
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "example@example.com",
+        },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        try {
-          if (!credentials?.email || !credentials?.password) {
-            return null;
-          }
-
-          const user = await prisma.user.findUnique({
-            where: {
-              email: credentials.email,
-            },
-          });
-
-          if (!user || !user.password) {
-            return null;
-          }
-
-          const isPasswordValid = await compare(credentials.password, user.password);
-
-          if (!isPasswordValid) {
-            return null;
-          }
-
-          return {
-            id: user.id,
-            email: user.email,
-            name: user.name,
-          };
-        } catch (error) {
-          console.error("Auth error:", error);
+        if (!credentials?.email || !credentials.password) {
           return null;
         }
+
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
+        });
+
+        if (!user || !(await compare(credentials.password, user.password))) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        };
       },
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
+    async signIn({ user, account }) {
       if (account?.provider === "google") {
         const existingUser = await prisma.user.findUnique({
           where: { email: user.email! },
@@ -95,6 +88,7 @@ export const authOptions: NextAuthOptions = {
               email: user.email!,
               name: user.name,
               image: user.image,
+              password: "OAUTH_USER", // Default password for OAuth users
             },
           });
         }
@@ -112,12 +106,46 @@ export const authOptions: NextAuthOptions = {
     },
     jwt: ({ token, user }) => {
       if (user) {
+        const u = user as unknown as any;
         return {
           ...token,
-          id: user.id,
+          id: u.id,
         };
       }
       return token;
     },
   },
-}; 
+};
+
+export async function getUserById(id: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return user;
+}
+
+export async function getUser(email: string) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  return user;
+}
+
+export async function createUser(email: string, name: string | null | undefined, image: string | null | undefined) {
+  const user = await prisma.user.create({
+    data: {
+      email,
+      name,
+      image,
+      password: "OAUTH_USER", // Default password for OAuth users
+    },
+  });
+
+  return user;
+} 

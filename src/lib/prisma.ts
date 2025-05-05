@@ -1,17 +1,16 @@
-import { PrismaClient } from "../generated/prisma";
+import { PrismaClient } from './prisma/generated'
 
-const prismaClientSingleton = () => {
-  return new PrismaClient();
-};
-
+// Add the prisma to the NodeJS global type
 declare global {
-  var prisma: undefined | ReturnType<typeof prismaClientSingleton>;
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined
 }
 
-const prisma = globalThis.prisma ?? prismaClientSingleton();
+// Prevent multiple instances of Prisma Client in development
+const prisma = global.prisma || new PrismaClient()
 
-if (process.env.NODE_ENV !== "production") {
-  globalThis.prisma = prisma;
+if (process.env.NODE_ENV !== 'production') {
+  global.prisma = prisma
 }
 
-export { prisma }; 
+export default prisma 
