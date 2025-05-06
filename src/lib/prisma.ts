@@ -6,11 +6,23 @@ declare global {
   var prisma: PrismaClient | undefined
 }
 
-// Prevent multiple instances of Prisma Client in development
-const prisma = global.prisma || new PrismaClient()
-
-if (process.env.NODE_ENV !== 'production') {
-  global.prisma = prisma
+const prismaClientPropertyName = '__prevent_name_collision__prisma'
+type GlobalThisWithPrisma = typeof globalThis & {
+  [prismaClientPropertyName]: PrismaClient
 }
+
+const getPrismaClient = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return new PrismaClient()
+  } else {
+    const globalThisWithPrisma = globalThis as GlobalThisWithPrisma
+    if (!globalThisWithPrisma[prismaClientPropertyName]) {
+      globalThisWithPrisma[prismaClientPropertyName] = new PrismaClient()
+    }
+    return globalThisWithPrisma[prismaClientPropertyName]
+  }
+}
+
+const prisma = getPrismaClient()
 
 export default prisma 
