@@ -1,4 +1,4 @@
-import { PrismaClient } from './prisma/generated'
+import { PrismaClient } from '@prisma/client'
 
 // Add the prisma to the NodeJS global type
 declare global {
@@ -6,23 +6,15 @@ declare global {
   var prisma: PrismaClient | undefined
 }
 
-const prismaClientPropertyName = '__prevent_name_collision__prisma'
-type GlobalThisWithPrisma = typeof globalThis & {
-  [prismaClientPropertyName]: PrismaClient
-}
+let prisma: PrismaClient
 
-const getPrismaClient = () => {
-  if (process.env.NODE_ENV === 'production') {
-    return new PrismaClient()
-  } else {
-    const globalThisWithPrisma = globalThis as GlobalThisWithPrisma
-    if (!globalThisWithPrisma[prismaClientPropertyName]) {
-      globalThisWithPrisma[prismaClientPropertyName] = new PrismaClient()
-    }
-    return globalThisWithPrisma[prismaClientPropertyName]
+if (process.env.NODE_ENV === 'production') {
+  prisma = new PrismaClient()
+} else {
+  if (!global.prisma) {
+    global.prisma = new PrismaClient()
   }
+  prisma = global.prisma
 }
-
-const prisma = getPrismaClient()
 
 export default prisma 
